@@ -83,7 +83,7 @@
           <ul>
             <li>
               <span class="title">Number of products: </span>
-              <span class="value">{{getCheckNum}}件(cái này trong tiếng Việt là chiếc)</span>
+              <span class="value">{{getCheckNum}}</span>
             </li>
             <li>
               <span class="title">Total Price: </span>
