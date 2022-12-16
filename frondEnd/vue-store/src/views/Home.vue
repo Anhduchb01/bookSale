@@ -3,13 +3,16 @@
     <div class="block">
       <el-carousel height="460px">
         <el-carousel-item >
-          <img style="height:460px;" src="../../public/imgs/anhbia.jpg"  />
+          <img style="height:460px;" src="../../public/imgs/bia1.jpg"  />
         </el-carousel-item>
         <el-carousel-item >
-          <img style="height:460px;" src="../../public/imgs/anhbia3.webp"  />
+          <img style="height:460px;" src="../../public/imgs/bia2.jpg"  />
         </el-carousel-item>
         <el-carousel-item >
-          <img style="height:460px;" src="../../public/imgs/anhbia4.jpg"  />
+          <img style="height:460px;" src="../../public/imgs/bia3.jpg"  />
+        </el-carousel-item>
+        <el-carousel-item >
+          <img style="height:460px;" src="../../public/imgs/bia4.jpg"  />
         </el-carousel-item>
       </el-carousel>
     </div>

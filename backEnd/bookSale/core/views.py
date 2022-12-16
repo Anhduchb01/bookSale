@@ -145,9 +145,24 @@ def getDetails(request):
         
         id = request.GET.get('productID')
         obj = Product.objects.get(product_id=int(id))
-        data = { "code":"001","Product" :model_to_dict(obj)
-                }
         
+        user_id= request.GET.get('user_id')
+        print(user_id)
+        if  user_id:
+                try : 
+                        objRating = Rating.objects.get(user_id=user_id,product_id=id)
+                        objRating.rating =  objRating.rating + 1
+                        objRating.save()
+                        msg="Plus Exited Rating OK"
+                except:
+                        lastRating = Rating.objects.last()
+                        rating_idobj = int(lastRating.rating_id) + 1
+                        objRating = Rating(rating_id=rating_idobj,user_id=user_id,product_id=id,rating=1)
+                        objRating.save()
+                        msg ="Create Rating OK"
+
+        data = { "code":"001","Product" :model_to_dict(obj),"msgRating":msg
+                }
         return JsonResponse(data)
 
 @csrf_exempt
@@ -174,8 +189,19 @@ def addShoppingCart(request):
                 "maxNum": product.prodcut_num,
                 "check": False
         }
+        try : 
+                objRating = Rating.objects.get(user_id=user_id,product_id=product_id)
+                objRating.rating =  objRating.rating + 2
+                objRating.save()
+                msg="Plus Rating OK"
+        except:
+                lastRating = Rating.objects.last()
+                rating_idobj = int(lastRating.rating_id) + 1
+                objRating = Rating(rating_id=rating_idobj,user_id=user_id,product_id=id,rating=2)
+                objRating.save()
+                msg ="Create Rating OK"
 
-        data = { "code":"001","shoppingCartData" :[shoppingCartDataTemp]
+        data = { "code":"001","shoppingCartData" :[shoppingCartDataTemp],"msgRate":msg
                 }
         
         return JsonResponse(data)

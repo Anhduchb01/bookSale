@@ -20,9 +20,7 @@
 
         <div class="pro-list">
           <span class="pro-name">{{productDetails.product_name}}</span>
-          <span class="pro-price">
-            <span>{{productDetails.product_price}}$</span>
-          </span>
+
           <p class="price-sum">Total : {{productDetails.product_price}}$</p>
         </div>
         <div class="button">
@@ -78,15 +76,28 @@ export default {
   },
   methods: {
     ...mapActions(["unshiftShoppingCart", "addShoppingCartNum"]),
+
     getDetails(val) {
-      this.$axios
-        .get("/api/product/getDetails?productID="+val)
-        .then(res => {
-          this.productDetails = res.data.Product;
-        })
-        .catch(err => {
-          return Promise.reject(err);
-        });
+      if (this.$store.getters.getUser) {
+        this.$axios
+          .get("/api/product/getDetails?productID="+val+"&user_id="+this.$store.getters.getUser.user_id)
+          .then(res => {
+            this.productDetails = res.data.Product;
+ 
+          })
+          .catch(err => {
+            return Promise.reject(err);
+          });
+      }else{
+        this.$axios
+          .get("/api/product/getDetails?productID="+val)
+          .then(res => {
+            this.productDetails = res.data.Product;
+          })
+          .catch(err => {
+            return Promise.reject(err);
+          });
+      }
     },
     addShoppingCart() {
       if (!this.$store.getters.getUser) {

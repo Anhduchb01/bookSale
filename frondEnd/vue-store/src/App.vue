@@ -56,7 +56,7 @@
         >
           <div class="logo">
             <router-link to="/">
-              <img width="189" height="59" src="../public/imgs/logo.jpeg" alt />
+              <img width="189" height="59" src="../public/imgs/logo.jpg" alt />
             </router-link>
           </div>
           <el-menu-item index="/">Home</el-menu-item>
