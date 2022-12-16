@@ -1,0 +1,205 @@
+[{
+  "_id": {
+    "$oid": "639b0e793b0c80838a4c3929"
+  },
+  "category_id": 34,
+  "category_name": "Fiction"
+},{
+  "_id": {
+    "$oid": "639b0e793b0c80838a4c392a"
+  },
+  "category_id": 1,
+  "category_name": "Detective and mystery stories"
+},{
+  "_id": {
+    "$oid": "639b0e793b0c80838a4c392b"
+  },
+  "category_id": 2,
+  "category_name": "American fiction"
+},{
+  "_id": {
+    "$oid": "639b0e793b0c80838a4c392c"
+  },
+  "category_id": 3,
+  "category_name": "Christian life"
+},{
+  "_id": {
+    "$oid": "639b0e793b0c80838a4c392d"
+  },
+  "category_id": 4,
+  "category_name": "Authors, English"
+},{
+  "_id": {
+    "$oid": "639b0e793b0c80838a4c392e"
+  },
+  "category_id": 5,
+  "category_name": "Africa, East"
+},{
+  "_id": {
+    "$oid": "639b0e793b0c80838a4c392f"
+  },
+  "category_id": 6,
+  "category_name": "Hyland, Morn (Fictitious character)"
+},{
+  "_id": {
+    "$oid": "639b0e793b0c80838a4c3930"
+  },
+  "category_id": 7,
+  "category_name": "Adventure stories"
+},{
+  "_id": {
+    "$oid": "639b0e793b0c80838a4c3931"
+  },
+  "category_id": 8,
+  "category_name": "Arthurian romances"
+},{
+  "_id": {
+    "$oid": "639b0e793b0c80838a4c3932"
+  },
+  "category_id": 9,
+  "category_name": "Fantasy fiction"
+},{
+  "_id": {
+    "$oid": "639b0e793b0c80838a4c3933"
+  },
+  "category_id": 10,
+  "category_name": "ok"
+},{
+  "_id": {
+    "$oid": "639b0e793b0c80838a4c3934"
+  },
+  "category_id": 11,
+  "category_name": "English drama"
+},{
+  "_id": {
+    "$oid": "639b0e793b0c80838a4c3935"
+  },
+  "category_id": 12,
+  "category_name": "Country life"
+},{
+  "_id": {
+    "$oid": "639b0e793b0c80838a4c3936"
+  },
+  "category_id": 13,
+  "category_name": "English fiction"
+},{
+  "_id": {
+    "$oid": "639b0e793b0c80838a4c3937"
+  },
+  "category_id": 14,
+  "category_name": "Clergy"
+},{
+  "_id": {
+    "$oid": "639b0e793b0c80838a4c3938"
+  },
+  "category_id": 15,
+  "category_name": "Aubrey, Jack (Fictitious character)"
+},{
+  "_id": {
+    "$oid": "639b0e793b0c80838a4c3939"
+  },
+  "category_id": 16,
+  "category_name": "Detective and mystery stories, English"
+},{
+  "_id": {
+    "$oid": "639b0e793b0c80838a4c393a"
+  },
+  "category_id": 17,
+  "category_name": "Black Death"
+},{
+  "_id": {
+    "$oid": "639b0e793b0c80838a4c393b"
+  },
+  "category_id": 18,
+  "category_name": "Human cloning"
+},{
+  "_id": {
+    "$oid": "639b0e793b0c80838a4c393c"
+  },
+  "category_id": 19,
+  "category_name": "Science fiction"
+},{
+  "_id": {
+    "$oid": "639b0e793b0c80838a4c393d"
+  },
+  "category_id": 20,
+  "category_name": "Great Britain"
+},{
+  "_id": {
+    "$oid": "639b0e793b0c80838a4c393e"
+  },
+  "category_id": 21,
+  "category_name": "American essays"
+},{
+  "_id": {
+    "$oid": "639b0e793b0c80838a4c393f"
+  },
+  "category_id": 22,
+  "category_name": "China"
+},{
+  "_id": {
+    "$oid": "639b0e793b0c80838a4c3940"
+  },
+  "category_id": 23,
+  "category_name": "Capitalism"
+},{
+  "_id": {
+    "$oid": "639b0e793b0c80838a4c3941"
+  },
+  "category_id": 24,
+  "category_name": "Ireland"
+},{
+  "_id": {
+    "$oid": "639b0e793b0c80838a4c3942"
+  },
+  "category_id": 25,
+  "category_name": "Juvenile Fiction"
+},{
+  "_id": {
+    "$oid": "639b0e793b0c80838a4c3943"
+  },
+  "category_id": 26,
+  "category_name": "Children's stories, English"
+},{
+  "_id": {
+    "$oid": "639b0e793b0c80838a4c3944"
+  },
+  "category_id": 27,
+  "category_name": "Male friendship"
+},{
+  "_id": {
+    "$oid": "639b0e793b0c80838a4c3945"
+  },
+  "category_id": 28,
+  "category_name": "Literary Collections"
+},{
+  "_id": {
+    "$oid": "639b0e793b0c80838a4c3946"
+  },
+  "category_id": 29,
+  "category_name": "Beresford, Tommy (Fictitious character)"
+},{
+  "_id": {
+    "$oid": "639b0e793b0c80838a4c3947"
+  },
+  "category_id": 30,
+  "category_name": "Imaginary wars and battles"
+},{
+  "_id": {
+    "$oid": "639b0e793b0c80838a4c3948"
+  },
+  "category_id": 31,
+  "category_name": "Dysfunctional families"
+},{
+  "_id": {
+    "$oid": "639b0e793b0c80838a4c3949"
+  },
+  "category_id": 32,
+  "category_name": "Poirot, Hercule (Fictitious character)"
+},{
+  "_id": {
+    "$oid": "639b0e793b0c80838a4c394a"
+  },
+  "category_id": 33,
+  "category_name": "Christmas stories"
+}]

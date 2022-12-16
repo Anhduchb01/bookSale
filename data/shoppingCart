@@ -1,0 +1,25 @@
+[{
+  "_id": {
+    "$oid": "639c4201f002a62125e245a2"
+  },
+  "shoppingCart_id": 0,
+  "product_id": 6,
+  "user_id": 10,
+  "num": 1
+},{
+  "_id": {
+    "$oid": "639c4edaa7b0e1caee54eee3"
+  },
+  "shoppingCart_id": 2,
+  "product_id": 1,
+  "user_id": 11,
+  "num": 1
+},{
+  "_id": {
+    "$oid": "639c4ee2a7b0e1caee54eee4"
+  },
+  "shoppingCart_id": 3,
+  "product_id": 3,
+  "user_id": 11,
+  "num": 2
+}]
