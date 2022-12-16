@@ -1,13 +1,7 @@
-<!--
- * @Description: 确认订单页面组件
- * @Author: hai-27
- * @Date: 2020-02-23 23:46:39
- * @LastEditors: hai-27
- * @LastEditTime: 2020-03-29 13:10:21
- -->
+
 <template>
   <div class="confirmOrder">
-    <!-- 头部 -->
+
     <div class="confirmOrder-header">
       <div class="header-content">
         <p>
@@ -17,11 +11,7 @@
         <router-link to></router-link>
       </div>
     </div>
-    <!-- 头部END -->
-
-    <!-- 主要内容容器 -->
     <div class="content">
-      <!-- 选择地址 -->
       <div class="section-address">
         <p class="title">Shipping address</p>
         <div class="address-body">
@@ -42,15 +32,12 @@
           </ul>
         </div>
       </div>
-      <!-- 选择地址END -->
-
-      <!-- 商品及优惠券 -->
       <div class="section-goods">
         <p class="title">Products and Coupons</p>
         <div class="goods-list">
           <ul>
             <li v-for="item in getCheckGoods" :key="item.id">
-              <img :src="$target + item.productImg" />
+              <img :src="item.productImg" />
               <span class="pro-name">{{item.productName}}</span>
               <span class="pro-price">{{item.price}}$ x {{item.num}}</span>
               <span class="pro-status"></span>
@@ -59,30 +46,21 @@
           </ul>
         </div>
       </div>
-      <!-- 商品及优惠券END -->
-
-      <!-- 配送方式 -->
       <div class="section-shipment">
         <p class="title">Delivery Method</p>
         <p class="shipment">Free Shipping</p>
       </div>
-      <!-- 配送方式END -->
-
-      <!-- 发票 -->
       <div class="section-invoice">
         <p class="title">Invoice</p>
         <p class="invoice">E-Invoice</p>
         <p class="invoice">Personal</p>
         <p class="invoice">Commodity Details</p>
       </div>
-      <!-- 发票END -->
-
-      <!-- 结算列表 -->
       <div class="section-count">
         <div class="money-box">
           <ul>
             <li>
-              <span class="title">Number of products: </span>
+              <span class="title">Number : </span>
               <span class="value">{{getCheckNum}}</span>
             </li>
             <li>
@@ -110,18 +88,13 @@
           </ul>
         </div>
       </div>
-      <!-- 结算列表END -->
-
-      <!-- 结算导航 -->
       <div class="section-bar">
         <div class="btn">
           <router-link to="/shoppingCart" class="btn-base btn-return">Return To Shopping Cart</router-link>
           <a href="javascript:void(0);" @click="addOrder" class="btn-base btn-primary">Settlement</a>
         </div>
       </div>
-      <!-- 结算导航END -->
     </div>
-    <!-- 主要内容容器END -->
   </div>
 </template>
 <script>
@@ -131,67 +104,37 @@ export default {
   name: "",
   data() {
     return {
-      // 虚拟数据
-      confirmAddress: 1, // 选择的地址id
-      // 地址列表
+      confirmAddress: 1, 
       address: [
         {
           id: 1,
-          name: "陈同学",
-          phone: "100861001010000",
-          address: "广东 广州市 白云区 ***"
+          name: "User1",
+          phone: "0123456789",
+          address: "Viet Nam"
         },
         {
           id: 2,
-          name: "陈同学",
-          phone: "100861001010000",
-          address: "广东 广州市 白云区 ***"
+          name: "User2",
+          phone: "0987654321",
+          address: "Japan"
         }
       ]
     };
   },
   created() {
-    // 如果没有勾选购物车商品直接进入确认订单页面,提示信息并返回购物车
     if (this.getCheckNum < 1) {
       this.notifyError("Please check the items before checkout");
       this.$router.push({ path: "/shoppingCart" });
     }
   },
   computed: {
-    // 结算的商品数量; 结算商品总计; 结算商品信息
     ...mapGetters(["getCheckNum", "getTotalPrice", "getCheckGoods"])
   },
   methods: {
     ...mapActions(["deleteShoppingCart"]),
     addOrder() {
-      this.$axios
-        .post("/api/user/order/addOrder", {
-          user_id: this.$store.getters.getUser.user_id,
-          products: this.getCheckGoods
-        })
-        .then(res => {
-          let products = this.getCheckGoods;
-          switch (res.data.code) {
-            // “001”代表结算成功
-            case "001":
-              for (let i = 0; i < products.length; i++) {
-                const temp = products[i];
-                // 删除已经结算的购物车商品
-                this.deleteShoppingCart(temp.id);
-              }
-              // 提示结算结果
-              this.notifySucceed(res.data.msg);
-              // 跳转我的订单页面
-              this.$router.push({ path: "/order" });
-              break;
-            default:
-              // 提示失败信息
-              this.notifyError(res.data.msg);
-          }
-        })
-        .catch(err => {
-          return Promise.reject(err);
-        });
+      this.notifySucceed("Order OK");
+      this.$router.push({ name: 'Home' })
     }
   }
 };
@@ -201,7 +144,6 @@ export default {
   background-color: #f5f5f5;
   padding-bottom: 20px;
 }
-/* 头部CSS */
 .confirmOrder .confirmOrder-header {
   background-color: #fff;
   border-bottom: 2px solid #ff6700;
@@ -224,9 +166,6 @@ export default {
   color: #ff6700;
   line-height: 80px;
 }
-/* 头部CSS END */
-
-/* 主要内容容器CSS */
 .confirmOrder .content {
   width: 1225px;
   margin: 0 auto;
@@ -234,7 +173,6 @@ export default {
   background-color: #fff;
 }
 
-/* 选择地址CSS */
 .confirmOrder .content .section-address {
   margin: 0 48px;
   overflow: hidden;
@@ -284,9 +222,6 @@ export default {
   padding-top: 50px;
   text-align: center;
 }
-/* 选择地址CSS END */
-
-/* 商品及优惠券CSS */
 .confirmOrder .content .section-goods {
   margin: 0 48px;
 }
@@ -336,9 +271,6 @@ export default {
   color: #ff6700;
   line-height: 30px;
 }
-/* 商品及优惠券CSS END */
-
-/* 配送方式CSS */
 .confirmOrder .content .section-shipment {
   margin: 0 48px;
   padding: 25px 0;
@@ -358,9 +290,6 @@ export default {
   font-size: 14px;
   color: #ff6700;
 }
-/* 配送方式CSS END */
-
-/* 发票CSS */
 .confirmOrder .content .section-invoice {
   margin: 0 48px;
   padding: 25px 0;
@@ -381,9 +310,6 @@ export default {
   margin-right: 20px;
   color: #ff6700;
 }
-/* 发票CSS END */
-
-/* 结算列表CSS */
 .confirmOrder .content .section-count {
   margin: 0 48px;
   padding: 20px 0;
@@ -418,9 +344,6 @@ export default {
 .confirmOrder .content .section-count .money-box .total-price {
   font-size: 30px;
 }
-/* 结算列表CSS END */
-
-/* 结算导航CSS */
 .confirmOrder .content .section-bar {
   padding: 20px 48px;
   border-top: 2px solid #f5f5f5;
@@ -448,7 +371,4 @@ export default {
   border-color: #ff6700;
   color: #fff;
 }
-/* 结算导航CSS */
-
-/* 主要内容容器CSS END */
 </style>

@@ -25,13 +25,14 @@ class Product(models.Model):
 class User(models.Model):
 	password = models.CharField(blank=True, null=True,max_length=20)
 	user_id = models.IntegerField(primary_key=True)
-	user_name = models.CharField(blank=True, null=True , max_length=100)
+	userName = models.CharField(blank=True, null=True , max_length=100)
 	class Meta:
 		managed = False
 		db_table = 'user'
 		ordering = ['user_id']
 	def __str__(self) -> str:
-		return str(self.user_id) + "--" + str(self.user_name)
+		return str(self.user_id) + "--" + str(self.userName)
+	
 
 class Rating(models.Model):
 	rating_id = models.IntegerField(primary_key=True)
@@ -55,3 +56,14 @@ class Category(models.Model):
 	def __str__(self) -> str:
 		return str(self.category_id) + " -- " + str(self.category_name)
 
+class ShoppingCart(models.Model):
+	shoppingCart_id = models.IntegerField(primary_key=True)
+	product_id = models.IntegerField(blank=False, null=False)
+	user_id = models.IntegerField(blank=False, null=False)
+	num = models.IntegerField(blank=False, null=False)
+	class Meta:
+		managed = False
+		db_table = 'shoppingCart'
+		ordering = ['shoppingCart_id']
+	def __str__(self) -> str:
+		return str(self.shoppingCart_id) + " -- " + str(self.user_id)

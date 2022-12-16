@@ -1,30 +1,26 @@
-<!--
- * @Description: 关于我们页面组件，未完成
- * @Author: hai-27
- * @Date: 2020-02-07 16:23:00
- * @LastEditors: hai-27
- * @LastEditTime: 2020-03-12 19:36:46
- -->
 <template>
   <div class="about" id="about" name="about">
     <div class="about-header">
       <div class="about-title">
         <i class="el-icon-tickets" style="color: #ff6700;"></i>
-        关于我们
+        About
       </div>
     </div>
     <div class="about-content">
-      <MyMarkdown></MyMarkdown>
+      <h2>Welcome to My Web</h2>
+      <br>
+        <p> My Web sale Book. We use recommend system which will recommend book prediction based on user behavior</p>
+        <br>
+        <img  src="../../public/imgs/about.jpeg" alt="" style=" display: block; margin-left: auto;margin-right: auto;width: 50%;">
+        <h4>Name : Anh Quan</h4>
+        <h4>hotline: 0123456789</h4>
+        <h4>Email : anhquan@gmail.com</h4>
     </div>
   </div>
 </template>
 <script>
-import MyMarkdown from "../components/MyMarkdown";
-export default {
-  components: {
-    MyMarkdown
-  }
-};
+
+
 </script>
 <style scoped>
 .about {

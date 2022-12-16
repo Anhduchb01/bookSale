@@ -28,12 +28,12 @@
                 <el-button type="text" slot="reference">{{this.$store.getters.getUser.userName}}</el-button>
               </el-popover>
             </li>
-            <li>
+            <!-- <li>
               <router-link to="/order">Order</router-link>
             </li>
             <li>
               <router-link to="/collect">Collection</router-link>
-            </li>
+            </li> -->
             <li :class="getNum > 0 ? 'shopCart-full' : 'shopCart'">
               <router-link to="/shoppingCart">
                 <i class="el-icon-shopping-cart-full"></i> Shopping Cart
@@ -56,10 +56,10 @@
         >
           <div class="logo">
             <router-link to="/">
-              <img src="./assets/imgs/logo.png" alt />
+              <img width="189" height="59" src="../public/imgs/logo.jpeg" alt />
             </router-link>
           </div>
-          <el-menu-item index="/">Front Page</el-menu-item>
+          <el-menu-item index="/">Home</el-menu-item>
           <el-menu-item index="/goods">All Products</el-menu-item>
           <el-menu-item index="/about">About Us</el-menu-item>
 
@@ -104,7 +104,7 @@
           </div>
           <div class="mod_help">
             <p>
-              <router-link to="/">Front Page</router-link>
+              <router-link to="/">Home</router-link>
               <span>|</span>
               <router-link to="/goods">All Products</router-link>
               <span>|</span>
@@ -129,52 +129,32 @@ export default {
   },
   data() {
     return {
-      activeIndex: "", // 头部导航栏选中的标签
-      search: "", // 搜索条件
-      register: false, // 是否显示注册组件
-      visible: false // 是否退出登录
+      activeIndex: "", 
+      search: "", 
+      register: false, 
+      visible: false 
     };
   },
   created() {
-    // 获取浏览器localStorage，判断用户是否已经登录
     if (localStorage.getItem("user")) {
-      // 如果已经登录，设置vuex登录状态
       this.setUser(JSON.parse(localStorage.getItem("user")));
     }
-    /* window.setTimeout(() => {
-      this.$message({
-        duration: 0,
-        showClose: true,
-        message: `
-        <p>如果觉得这个项目还不错，</p>
-        <p style="padding:10px 0">您可以给项目源代码仓库点Star支持一下，谢谢！</p>
-        <p><a href="https://github.com/hai-27/vue-store" target="_blank">Github传送门</a></p>`,
-        dangerouslyUseHTMLString: true,
-        type: "success"
-      });
-    }, 1000 * 60); */
   },
   computed: {
     ...mapGetters(["getUser", "getNum"])
   },
   watch: {
-    // 获取vuex的登录状态
     getUser: function(val) {
       if (val === "") {
-        // 用户没有登录
         this.setShoppingCart([]);
       } else {
-        // 用户已经登录,获取该用户的购物车信息
         this.$axios
-          .post("/api/user/shoppingCart/getShoppingCart", {
-            user_id: val.user_id
-          })
+          .post("/api/user/shoppingCart/getShoppingCart?user_id="+val.user_id, 
+          )
           .then(res => {
             if (res.data.code === "001") {
-              // 001 为成功, 更新vuex购物车状态
               this.setShoppingCart(res.data.shoppingCartData);
             } else {
-              // 提示失败信息
               this.notifyError(res.data.msg);
             }
           })
@@ -187,26 +167,21 @@ export default {
   methods: {
     ...mapActions(["setUser", "setShowLogin", "setShoppingCart"]),
     login() {
-      // 点击登录按钮, 通过更改vuex的showLogin值显示登录组件
       this.setShowLogin(true);
     },
-    // 退出登录
     logout() {
       this.visible = false;
-      // 清空本地登录信息
       localStorage.setItem("user", "");
-      // 清空vuex登录信息
       this.setUser("");
       this.notifySucceed("成功退出登录");
     },
-    // 接收注册子组件传过来的数据
     isRegister(val) {
       this.register = val;
     },
-    // 点击搜索按钮
+
     searchClick() {
       if (this.search != "") {
-        // 跳转到全部商品页面,并传递搜索条件
+
         this.$router.push({ path: "/goods", query: { search: this.search } });
         this.search = "";
       }
@@ -216,7 +191,7 @@ export default {
 </script>
 
 <style>
-/* 全局CSS */
+
 * {
   padding: 0;
   margin: 0;
@@ -237,9 +212,7 @@ a,
 a:hover {
   text-decoration: none;
 }
-/* 全局CSS END */
 
-/* 顶部导航栏CSS */
 .topbar {
   height: 40px;
   background-color: #3d3d3d;
@@ -295,9 +268,7 @@ a:hover {
 .topbar .nav .shopCart-full a {
   color: white;
 }
-/* 顶部导航栏CSS END */
 
-/* 顶栏容器CSS */
 .el-header .el-menu {
   max-width: 1225px;
   margin: 0 auto;
@@ -313,9 +284,7 @@ a:hover {
   width: 300px;
   float: right;
 }
-/* 顶栏容器CSS END */
 
-/* 底栏容器CSS */
 .footer {
   width: 100%;
   text-align: center;
@@ -371,5 +340,5 @@ a:hover {
 .footer .mod_help p span {
   padding: 0 22px;
 }
-/* 底栏容器CSS END */
+
 </style>

@@ -1,10 +1,4 @@
-<!--
- * @Description: 列表组件，用于首页、全部商品页面的商品列表
- * @Author: hai-27
- * @Date: 2020-02-07 16:23:00
- * @LastEditors: hai-27
- * @LastEditTime: 2020-04-05 13:22:22
- -->
+
 <template>
   <div id="myList" class="myList">
     <ul>
@@ -17,15 +11,11 @@
           <i class="el-icon-close delete" slot="reference" v-show="isDelete"></i>
         </el-popover>
         <router-link :to="{ path: '/goods/details', query: {productID:item.product_id} }">
-          <img :src="$target +item.product_picture" alt />
+          <img :src="item.product_picture" alt />
           <h2>{{item.product_name}}</h2>
           <h3>{{item.product_title}}</h3>
           <p>
-            <span>{{item.product_selling_price}}$</span>
-            <span
-              v-show="item.product_price != item.product_selling_price"
-              class="del"
-            >{{item.product_price}}$</span>
+            <span>{{item.product_price}}$</span>
           </p>
         </router-link>
       </li>
@@ -41,14 +31,11 @@
 <script>
 export default {
   name: "MyList",
-  // list为父组件传过来的商品列表
-  // isBore为是否显示“browse More”
   props: ["list", "isMore", "isDelete"],
   data() {
     return {};
   },
   computed: {
-    // B过list获取当前显示的商品的分类ID，用于“browse More”链接的参数
     categoryID: function() {
       let categoryID = [];
       if (this.list != "") {
@@ -72,19 +59,15 @@ export default {
         .then(res => {
           switch (res.data.code) {
             case "001":
-              // 删除成功
-              // 删除删除列表中的该商品信息
               for (let i = 0; i < this.list.length; i++) {
                 const temp = this.list[i];
                 if (temp.product_id == product_id) {
                   this.list.splice(i, 1);
                 }
               }
-              // 提示删除成功信息
               this.notifySucceed(res.data.msg);
               break;
             default:
-              // 提示删除失败信息
               this.notifyError(res.data.msg);
           }
         })

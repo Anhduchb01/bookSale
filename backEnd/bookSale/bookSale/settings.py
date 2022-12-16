@@ -134,3 +134,4 @@ REST_FRAMEWORK = {
       'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
     ]
 }
+# CSRF_TRUSTED_ORIGINS=["http://localhost:8080"]

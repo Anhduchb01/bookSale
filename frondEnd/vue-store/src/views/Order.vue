@@ -1,13 +1,5 @@
-<!--
- * @Description: My Orders页面组件
- * @Author: hai-27
- * @Date: 2020-02-20 17:21:54
- * @LastEditors: hai-27
- * @LastEditTime: 2020-02-27 13:36:27
- -->
 <template>
   <div class="order">
-    <!-- My Orders头部 -->
     <div class="order-header">
       <div class="order-header-content">
         <p>
@@ -16,13 +8,10 @@
         </p>
       </div>
     </div>
-    <!-- My Orders头部END -->
-
-    <!-- My Orders主要内容 -->
     <div class="order-content" v-if="orders.length>0">
       <div class="content" v-for="(item,index) in orders" :key="index">
         <ul>
-          <!-- My Orders表头 -->
+
           <li class="order-info">
             <div class="order-id">Order ID: {{item[0].order_id}}</div>
             <div class="order-time">Order item: {{item[0].order_time | dateFormat}}</div>
@@ -34,9 +23,6 @@
             <div class="pro-num">Quantity</div>
             <div class="pro-total">Subtotal</div>
           </li>
-          <!-- My Orders表头END -->
-
-          <!-- 订单列表 -->
           <li class="product-list" v-for="(product,i) in item" :key="i">
             <div class="pro-img">
               <router-link :to="{ path: '/goods/details', query: {productID:product.product_id} }">
@@ -66,33 +52,27 @@
               <span class="total-price">{{total[index].totalPrice}}$</span>
             </span>
           </div>
-          <!-- 订单列表END -->
         </div>
       </div>
       <div style="margin-top:-40px;"></div>
     </div>
-    <!-- My Orders主要内容END -->
-
-    <!-- 订单为空的时候显示的内容 -->
     <div v-else class="order-empty">
       <div class="empty">
         <h2>Your order is still empty! </h2>
         <p>Go Shopping! </p>
       </div>
     </div>
-    <!-- 订单为空的时候显示的内容END -->
   </div>
 </template>
 <script>
 export default {
   data() {
     return {
-      orders: [], // 订单列表
-      total: [] // 每个订单的商品数量及总价列表
+      orders: [],
+      total: [] 
     };
   },
   activated() {
-    // 获取订单数据
     this.$axios
       .post("/api/user/order/getOrder", {
         user_id: this.$store.getters.getUser.user_id
@@ -109,7 +89,6 @@ export default {
       });
   },
   watch: {
-    // 通过订单信息，计算出每个订单的商品数量及总价
     orders: function(val) {
       let total = [];
       for (let i = 0; i < val.length; i++) {
@@ -134,7 +113,6 @@ export default {
   background-color: #f5f5f5;
   padding-bottom: 20px;
 }
-/* My Orders头部CSS */
 .order .order-header {
   height: 64px;
   border-bottom: 2px solid #ff6700;

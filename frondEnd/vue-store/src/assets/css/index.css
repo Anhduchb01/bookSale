@@ -1,14 +1,7 @@
-/*
- * @Description: 首页css样式
- * @Author: hai-27
- * @Date: 2020-02-07 16:23:00
- * @LastEditors: hai-27
- * @LastEditTime: 2020-02-27 00:46:58
- */
 
 .main-box {
   background-color: #f5f5f5;
-  padding-bottom: 20px;
+  padding-bottom: 300px;
 }
 
 .main {
@@ -16,7 +9,7 @@
   max-width: 1225px;
 }
 
-/* 轮播图CSS */
+
 .block {
   margin: 0 auto;
   max-width: 1225px;
@@ -30,7 +23,7 @@
   background-color: #d3dce6;
 }
 
-/* 轮播图CSS END */
+
 
 .box-hd {
   height: 58px;
