@@ -30,24 +30,6 @@
             </div>
           </div>
         </div>
-        <div class="appliance" id="promo-menu">
-
-          <div class="box-bd">
-            <div class="promo-list">
-              <ul>
-                <li>
-                  <img src="../../public/imgs/anh2.jpg" />
-                </li>
-                <li>
-                  <img src="../../public/imgs/anh3.jpg" />
-                </li>
-              </ul>
-            </div>
-            <div class="list">
-              <MyList :list="applianceList" :isMore="true"></MyList>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   </div>
@@ -109,7 +91,10 @@ export default {
         this.getPromo("", "phoneList","/api/product/getPromoProduct");
         
       }else{
-        this.getRecommend("", "phoneList")
+
+          this.getRecommend("", "phoneList")
+
+        
       }
   },
   computed: {

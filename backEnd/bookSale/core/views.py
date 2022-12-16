@@ -25,24 +25,36 @@ from django.db.models import Q
 def recommend(request):
         json_data = json.loads(request.body) 
         user_id= json_data['user_id']
-        rating = Rating.objects.all()
-        total = len(rating)
-        category = Category.objects.all()
-        product = Product.objects.all()
+        try:
+                exituser = Rating.objects.filter(user_id=user_id)
+        except:
+                exituser=False
+        if exituser:
+                rating = Rating.objects.all()
+                total = len(rating)
+                category = Category.objects.all()
+                product = Product.objects.all()
 
-        data = { "code":"001","Rating" :list(rating.values("rating_id", "product_id","user_id","rating")),"Category":list(category.values("category_id", "category_name")),"Product":list(product.values("product_id", "category_id", "prodcut_num", "product_intro", "product_name", "product_picture","product_price","product_title"))
-                }
-        listProductcf = get_item_cf_for_user(data,user_id)
+                data = { "code":"001","Rating" :list(rating.values("rating_id", "product_id","user_id","rating")),"Category":list(category.values("category_id", "category_name")),"Product":list(product.values("product_id", "category_id", "prodcut_num", "product_intro", "product_name", "product_picture","product_price","product_title"))
+                        }
+                listProductcf = get_item_cf_for_user(data,user_id)
 
-        arrProduct =[]
-        for i in listProductcf:
-                product = model_to_dict(Product.objects.get(product_id=i))
-                arrProduct.append(product)
-        listProductcb = get_item_cb_for_user(data,data,data,user_id)
+                arrProduct =[]
+                for i in listProductcf:
+                        product = model_to_dict(Product.objects.get(product_id=i))
+                        arrProduct.append(product)
+                listProductcb = get_item_cb_for_user(data,data,data,user_id)
 
-        for i in listProductcb:
-                product = model_to_dict(Product.objects.get(product_id=i))
-                arrProduct.append(product)
+                for i in listProductcb:
+                        product = model_to_dict(Product.objects.get(product_id=i))
+                        arrProduct.append(product)
+                print(type(arrProduct))
+        else:
+                obj = Product.objects.all().order_by('product_id')[:8] 
+                total = len(obj)
+                arrProduct = list(obj.values("product_id", "category_id", "prodcut_num", "product_intro", "product_name", "product_picture","product_price","product_title"))
+                print(type(arrProduct)) 
+
         return JsonResponse({"code":"001","Product":arrProduct})
         
 # Home
@@ -222,7 +234,15 @@ def updateShoppingCart(request):
         return JsonResponse(data)
 @csrf_exempt
 def deleteShoppingCart(request):
-        pass
+        json_data = json.loads(request.body) 
+        user_id = json_data['user_id']
+        product_id = json_data['product_id']
+        tmpshoppingCart = ShoppingCart.objects.get(user_id=user_id,product_id=product_id)
+        tmpshoppingCart.delete()
+        data = { "code":"001"}
+        
+        return JsonResponse(data)
+
 
 # register
 @csrf_exempt
