@@ -20,6 +20,8 @@ import json
 import numpy as np
 from django.db.models import Q
 
+from datetime import datetime, timezone
+
 # recommend
 @csrf_exempt
 def recommend(request):
@@ -91,7 +93,6 @@ def getShoppingCart(request):
 
         user_id = request.GET.get('user_id')
         b = ShoppingCart.objects.filter(user_id=user_id)
-        print(type(b))
         arrProduct = []
         for p in b.values():
 
@@ -113,7 +114,41 @@ def getShoppingCart(request):
         data = { "code":"001","shoppingCartData" :arrProduct}
               
         return JsonResponse(data)
-        
+#Order 
+
+@csrf_exempt        
+def addOrder(request):
+        json_data = json.loads(request.body) 
+        user_id = json_data['user_id']
+        products = json_data['products']
+        nowTime = datetime.now(tz=timezone.utc)
+        for product in products:
+                try:
+                        lastOrder = Order.objects.last()
+                        Order_idobj = int(lastOrder.order_id) + 1
+                except:
+                        Order_idobj = 0
+                try : 
+                        objRating = Rating.objects.get(user_id=user_id,product_id=product['productID'])
+                        objRating.rating =  objRating.rating + 5
+                        objRating.save()
+
+                except:
+                        lastRating = Rating.objects.last()
+                        rating_idobj = int(lastRating.rating_id) + 1
+                        objRating = Rating(rating_id=rating_idobj,user_id=user_id,product_id=product['productID'],rating=5)
+                        objRating.save()
+                orderObj = Order(order_id=Order_idobj,user_id=user_id,product_id=product['productID'],product_num=product['num'],product_price=product['price'],order_time=nowTime)
+                orderObj.save()
+                
+        try:
+                shoppingCartObj = ShoppingCart.objects.filter(user_id=user_id)
+                shoppingCartObj.delete()
+        except:
+                msgCard = "ShoppongCart Delete OK"
+        data = { "code":"001","msg" :"Add Order OK"}
+              
+        return JsonResponse(data)
 
 # Goods (All product)
 @csrf_exempt

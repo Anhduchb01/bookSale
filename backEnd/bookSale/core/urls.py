@@ -25,7 +25,9 @@ urlpatterns = [
         # shoppingCart
         path('user/shoppingCart/updateShoppingCart',updateShoppingCart,name='updateShoppingCart'),
         path('user/shoppingCart/deleteShoppingCart',deleteShoppingCart,name='deleteShoppingCart'),
- 
+        # Order
+
+        path('user/order/addOrder',addOrder,name='addOrder'),
         # login
         path('users/login',login,name='login'),
         # register

@@ -67,3 +67,17 @@ class ShoppingCart(models.Model):
 		ordering = ['shoppingCart_id']
 	def __str__(self) -> str:
 		return str(self.shoppingCart_id) + " -- " + str(self.user_id)
+class Order(models.Model):	
+	order_id = models.IntegerField(primary_key=True)  
+	user_id = models.IntegerField(blank=False, null=False)
+	product_id = models.IntegerField(blank=False, null=False)
+	product_num = models.IntegerField(blank=False, null=False)
+	product_price = models.IntegerField(blank=False, null=False)
+	order_time = models.DateTimeField(auto_now=False, auto_now_add=False,blank=True, null=True)
+
+	class Meta:
+		managed = False
+		db_table = 'order'
+		ordering = ['order_id']
+	def __str__(self) -> str:
+		return str(self.order_id) + " -- " + str(self.user_id)

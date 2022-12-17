@@ -132,9 +132,31 @@ export default {
   },
   methods: {
     ...mapActions(["deleteShoppingCart"]),
-    addOrder() {
-      this.notifySucceed("Order OK");
-      this.$router.push({ name: 'Home' })
+    addOrder() {   
+      this.$axios
+        .post("/api/user/order/addOrder", {
+          user_id: this.$store.getters.getUser.user_id,
+          products: this.getCheckGoods
+        })
+        .then(res => {
+          let products = this.getCheckGoods;
+          switch (res.data.code) {
+            case "001":
+              for (let i = 0; i < products.length; i++) {
+                const temp = products[i];
+                this.deleteShoppingCart(temp.id);
+              }
+              this.notifySucceed(res.data.msg);
+              this.$router.push({ name: 'Home' })
+              break;
+            default:
+              this.notifyError(res.data.msg);
+          }
+        })
+        .catch(err => {
+          return Promise.reject(err);
+        });
+    
     }
   }
 };
