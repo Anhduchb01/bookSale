@@ -174,6 +174,7 @@ export default {
       localStorage.setItem("user", "");
       this.setUser("");
       this.notifySucceed("成功退出登录");
+      location.reload()
     },
     isRegister(val) {
       this.register = val;
