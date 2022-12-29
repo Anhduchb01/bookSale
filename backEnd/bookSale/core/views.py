@@ -27,10 +27,14 @@ from datetime import datetime, timezone
 def recommend(request):
         json_data = json.loads(request.body) 
         user_id= json_data['user_id']
+        arrProduct =[]
+        #check have user in rating table 
         try:
                 exituser = Rating.objects.filter(user_id=user_id)
         except:
                 exituser=False
+        
+        
         if exituser:
                 rating = Rating.objects.all()
                 total = len(rating)
@@ -41,7 +45,7 @@ def recommend(request):
                         }
                 listProductcf = get_item_cf_for_user(data,user_id)
 
-                arrProduct =[]
+                
                 for i in listProductcf:
                         product = model_to_dict(Product.objects.get(product_id=i))
                         arrProduct.append(product)
@@ -54,8 +58,46 @@ def recommend(request):
         else:
                 obj = Product.objects.all().order_by('product_id')[:8] 
                 total = len(obj)
-                arrProduct = list(obj.values("product_id", "category_id", "prodcut_num", "product_intro", "product_name", "product_picture","product_price","product_title"))
-                print(type(arrProduct)) 
+                ListProduct = list(obj.values("product_id", "category_id", "prodcut_num", "product_intro", "product_name", "product_picture","product_price","product_title"))
+                for product in ListProduct:
+                        arrProduct.append(product)
+
+
+        
+        #check have user in rating_author table 
+        try:
+                exituser_author = Rating_Author.objects.filter(user_id=user_id)
+        except:
+                exituser_author=False
+        if exituser_author:
+                rating_author = Rating_Author.objects.all()
+                
+                author = Author.objects.all()
+                product = Product.objects.all()
+                rating = Rating.objects.all()
+                total = len(rating)
+                category = Category.objects.all()
+
+                data = { "code":"001","Rating" :list(rating.values("rating_id", "product_id","user_id","rating")),"Rating_author":list(rating_author.values("rating_id", "author_id","user_id","rating")),"category":list(category.values("category_id", "category_name")),"Author":list(author.values("author_id", "author_name")),"Product":list(product.values("product_id", "category_id", "prodcut_num", "product_intro", "product_name", "product_picture","product_price","product_title"))
+                        }
+                listProductcf = get_item_cf_for_user(data,user_id)
+
+                
+                for i in listProductcf:
+                        product = model_to_dict(Product.objects.get(product_id=i))
+                        arrProduct.append(product)
+                listProductcb = get_item_cb_for_user(data,data,data,user_id)
+
+                for i in listProductcb:
+                        product = model_to_dict(Product.objects.get(product_id=i))
+                        arrProduct.append(product)
+                print(type(arrProduct))
+        else:
+                obj = Product.objects.all().order_by('product_id')[:8] 
+                total = len(obj)
+                ListProduct = list(obj.values("product_id", "category_id", "prodcut_num", "product_intro", "product_name", "product_picture","product_price","product_title"))
+                for product in ListProduct:
+                        arrProduct.append(product)
 
         return JsonResponse({"code":"001","Product":arrProduct})
         
@@ -123,18 +165,31 @@ def addOrder(request):
         products = json_data['products']
         nowTime = datetime.now(tz=timezone.utc)
         for product in products:
+                # save order
                 try:
                         lastOrder = Order.objects.last()
                         Order_idobj = int(lastOrder.order_id) + 1
                 except:
                         Order_idobj = 0
+                # Plus rating for rating
                 try : 
-                        objRating = Rating.objects.get(user_id=user_id,product_id=product['productID'])
+                        objRating = Rating.objects.get(user_id=user_id,author_id=product['author_id'])
                         objRating.rating =  objRating.rating + 5
                         objRating.save()
 
                 except:
                         lastRating = Rating.objects.last()
+                        rating_idobj = int(lastRating.rating_id) + 1
+                        objRating = Rating(rating_id=rating_idobj,user_id=user_id,author_id=product['author_id'],rating=5)
+                        objRating.save()
+                # Plus rating for rating_author
+                try : 
+                        objRating = Rating_Author.objects.get(user_id=user_id,author_id=product['author_id'])
+                        objRating.rating =  objRating.rating + 5
+                        objRating.save()
+
+                except:
+                        lastRating = Rating_Author.objects.last()
                         rating_idobj = int(lastRating.rating_id) + 1
                         objRating = Rating(rating_id=rating_idobj,user_id=user_id,product_id=product['productID'],rating=5)
                         objRating.save()
@@ -195,6 +250,17 @@ def getDetails(request):
                         objRating = Rating(rating_id=rating_idobj,user_id=user_id,product_id=id,rating=1)
                         objRating.save()
                         msg ="Create Rating OK"
+                try : 
+                        objRating = Rating_Author.objects.get(user_id=user_id,author_id=obj.author_id)
+                        objRating.rating =  objRating.rating + 1
+                        objRating.save()
+                        msg="Plus Exited Rating OK"
+                except:
+                        lastRating = Rating_Author.objects.last()
+                        rating_idobj = int(lastRating.rating_id) + 1
+                        objRating = Rating_Author(rating_id=rating_idobj,user_id=user_id,pauthor_id=obj.author_id,rating=1)
+                        objRating.save()
+                        msg ="Create Rating OK"
 
         data = { "code":"001","Product" :model_to_dict(obj),"msgRating":msg
                 }
@@ -224,6 +290,7 @@ def addShoppingCart(request):
                 "maxNum": product.prodcut_num,
                 "check": False
         }
+        #plus rating for rating
         try : 
                 objRating = Rating.objects.get(user_id=user_id,product_id=product_id)
                 objRating.rating =  objRating.rating + 2
@@ -233,6 +300,18 @@ def addShoppingCart(request):
                 lastRating = Rating.objects.last()
                 rating_idobj = int(lastRating.rating_id) + 1
                 objRating = Rating(rating_id=rating_idobj,user_id=user_id,product_id=id,rating=2)
+                objRating.save()
+                msg ="Create Rating OK"
+        #plus rating for rating_author
+        try : 
+                objRating = Rating_Author.objects.get(user_id=user_id,author_id=product.author_id)
+                objRating.rating =  objRating.rating + 2
+                objRating.save()
+                msg="Plus Rating OK"
+        except:
+                lastRating = Rating_Author.objects.last()
+                rating_idobj = int(lastRating.rating_id) + 1
+                objRating = Rating_Author(rating_id=rating_idobj,user_id=user_id,author_id=product.author_id,rating=2)
                 objRating.save()
                 msg ="Create Rating OK"
 

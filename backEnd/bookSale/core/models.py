@@ -5,23 +5,25 @@ from distutils.command.upload import upload
 
 
 class Product(models.Model):
-    product_id = models.IntegerField(primary_key=True)
-    category_id = models.IntegerField(blank=True, null=True)
-    prodcut_num = models.IntegerField(blank=True, null=True)
-    product_intro = models.TextField(blank=True, null=True)
-    product_name = models.TextField(blank=True, null=True)
-    product_picture = models.TextField(blank=True, null=True)
-    product_price = models.IntegerField(blank=True, null=True)
-    product_title = models.TextField(blank=True, null=True)
+	product_id = models.IntegerField(primary_key=True)
+	category_id = models.IntegerField(blank=True, null=True)
+	prodcut_num = models.IntegerField(blank=True, null=True)
+	product_intro = models.TextField(blank=True, null=True)
+	product_name = models.TextField(blank=True, null=True)
+	product_picture = models.TextField(blank=True, null=True)
+	product_price = models.IntegerField(blank=True, null=True)
+	product_title = models.TextField(blank=True, null=True)
+	author_id = models.IntegerField(blank=True, null=True)
 
-    class Meta:
+
+	class Meta:
 	
-        managed = False
-        db_table = 'product'
-        ordering = ['product_id']
+		managed = False
+		db_table = 'product'
+		ordering = ['product_id']
 
-    def __str__(self) -> str:
-                return str(self.product_id) + " -- " + str(self.product_name)
+	def __str__(self) -> str:
+				return str(self.product_id) + " -- " + str(self.product_name)
 class User(models.Model):
 	password = models.CharField(blank=True, null=True,max_length=20)
 	user_id = models.IntegerField(primary_key=True)
@@ -81,3 +83,25 @@ class Order(models.Model):
 		ordering = ['order_id']
 	def __str__(self) -> str:
 		return str(self.order_id) + " -- " + str(self.user_id)
+class Author(models.Model):
+	author_id = models.IntegerField(primary_key=True)
+	author_name = models.CharField(blank=True, null=True,max_length=100)
+	class Meta:
+		managed = False
+		db_table = 'author'
+		ordering = ['author_id']
+	def __str__(self) -> str:
+		return str(self.author_id) + " -- " + str(self.author_name)
+
+class Rating_Author(models.Model):
+	rating_id = models.IntegerField(primary_key=True)
+	author_id = models.IntegerField(blank=False, null=False)
+	user_id = models.IntegerField(blank=False, null=False)
+	rating = models.IntegerField(blank=True, null=True)
+	
+	class Meta:
+		managed = False
+		db_table = 'rating_author'
+		ordering = ['rating_id']
+	def __str__(self) -> str:
+		return "Rating of user_id " + str(self.user_id)+ " for author_id "+str(self.author_id) 
