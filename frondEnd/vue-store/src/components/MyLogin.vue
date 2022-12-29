@@ -92,6 +92,7 @@ export default {
                 localStorage.setItem("user", user);
                 this.setUser(res.data.user);
                 this.notifySucceed(res.data.msg);
+                location.reload()
               } else {
                 this.$refs["ruleForm"].resetFields();
                 this.notifyError(res.data.msg);
