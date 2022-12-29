@@ -14,7 +14,7 @@ from requests import request
 from django.contrib.auth import authenticate,login,logout,decorators
 from django.core.paginator import Paginator
 from .forms import CreateUserForm
-from .colab_filltering import get_item_cf_for_user,process_data
+from .colab_filltering import get_item_cf_for_user,process_data,get_author_cf_for_user
 from .content_based import get_item_cb_for_user
 import json
 import numpy as np
@@ -27,7 +27,9 @@ from datetime import datetime, timezone
 def recommend(request):
         json_data = json.loads(request.body) 
         user_id= json_data['user_id']
-        arrProduct =[]
+        arrProductRatingCb =[]
+        arrProductRatingCf =[]
+        arrProductRatingAuthor =[]
         #check have user in rating table 
         try:
                 exituser = Rating.objects.filter(user_id=user_id)
@@ -48,19 +50,22 @@ def recommend(request):
                 
                 for i in listProductcf:
                         product = model_to_dict(Product.objects.get(product_id=i))
-                        arrProduct.append(product)
+                        arrProductRatingCf.append(product)
                 listProductcb = get_item_cb_for_user(data,data,data,user_id)
 
                 for i in listProductcb:
                         product = model_to_dict(Product.objects.get(product_id=i))
-                        arrProduct.append(product)
-                print(type(arrProduct))
+                        arrProductRatingCb.append(product)
+       
         else:
-                obj = Product.objects.all().order_by('product_id')[:8] 
-                total = len(obj)
+                obj = Product.objects.all().order_by('product_id')[:4] 
                 ListProduct = list(obj.values("product_id", "category_id", "prodcut_num", "product_intro", "product_name", "product_picture","product_price","product_title"))
                 for product in ListProduct:
-                        arrProduct.append(product)
+                        arrProductRatingCf.append(product)
+                obj2 = Product.objects.all().order_by('product_id')[:4] 
+                ListProduct2 = list(obj2.values("product_id", "category_id", "prodcut_num", "product_intro", "product_name", "product_picture","product_price","product_title"))
+                for product2 in ListProduct2:
+                        arrProductRatingCb.append(product2)
 
 
         
@@ -78,28 +83,28 @@ def recommend(request):
                 total = len(rating)
                 category = Category.objects.all()
 
-                data = { "code":"001","Rating" :list(rating.values("rating_id", "product_id","user_id","rating")),"Rating_author":list(rating_author.values("rating_id", "author_id","user_id","rating")),"category":list(category.values("category_id", "category_name")),"Author":list(author.values("author_id", "author_name")),"Product":list(product.values("product_id", "category_id", "prodcut_num", "product_intro", "product_name", "product_picture","product_price","product_title"))
+                data = { "code":"001","Rating" :list(rating.values("rating_id", "product_id","user_id","rating")),"Rating_author":list(rating_author.values("rating_id", "author_id","user_id","rating")),"category":list(category.values("category_id", "category_name")),"Product":list(product.values("product_id", "category_id", "prodcut_num", "product_intro", "product_name", "product_picture","product_price","product_title","author_id"))
                         }
-                listProductcf = get_item_cf_for_user(data,user_id)
+                listProductcf = get_author_cf_for_user(data,user_id)[:4]
 
                 
                 for i in listProductcf:
                         product = model_to_dict(Product.objects.get(product_id=i))
-                        arrProduct.append(product)
-                listProductcb = get_item_cb_for_user(data,data,data,user_id)
+                        arrProductRatingAuthor.append(product)
+                # listProductcb = get_author_cf_for_user(data,data,data,user_id)
 
-                for i in listProductcb:
-                        product = model_to_dict(Product.objects.get(product_id=i))
-                        arrProduct.append(product)
-                print(type(arrProduct))
+                # for i in listProductcb:
+                #         product = model_to_dict(Product.objects.get(product_id=i))
+                #         arrProduct.append(product)
+                print(type(arrProductRatingAuthor))
         else:
                 obj = Product.objects.all().order_by('product_id')[:8] 
                 total = len(obj)
                 ListProduct = list(obj.values("product_id", "category_id", "prodcut_num", "product_intro", "product_name", "product_picture","product_price","product_title"))
                 for product in ListProduct:
-                        arrProduct.append(product)
+                        arrProductRatingAuthor.append(product)
 
-        return JsonResponse({"code":"001","Product":arrProduct})
+        return JsonResponse({"code":"001","ProductRatingCb":arrProductRatingCb,"ProductRatingCf":arrProductRatingCf,"ProductRatingAuthor":arrProductRatingAuthor})
         
 # Home
 @csrf_exempt

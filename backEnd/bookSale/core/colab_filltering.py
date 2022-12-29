@@ -144,16 +144,15 @@ def get_author_cf_for_user(rating, id_user):
     for index, id in enumerate(author_id):
         author_id_to_product_id[id] += [product_id[index]]
 
-
     rate_train = process_data_author(rating)
     cf = CF(rate_train, k = 4, uuCF = 1)
     cf.fit()
     list_author_id = cf.recommend(id_user,4)
-
+    print(list_author_id)
     recommend_product_id = []
     for author_id in list_author_id:
         recommend_product_id+=author_id_to_product_id[author_id]
-        
+
     return recommend_product_id
 
 def process_data(rating):

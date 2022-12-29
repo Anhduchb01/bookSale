@@ -2,7 +2,7 @@
 <template>
   <div id="myList" class="myList">
     <ul>
-      <li v-for="item in list" :key="item.product_id">
+      <li v-for="item in list" :key="'product'+ item.product_id">
         <el-popover placement="top">
           <p>Confirm To Delete? </p>
           <div style="text-align: right; margin: 10px 0 0">
@@ -19,12 +19,12 @@
           </p>
         </router-link>
       </li>
-      <li v-show="isMore && list.length>=1" id="more">
+      <!-- <li v-show="isMore && list.length>=1" id="more">
         <router-link :to="{ path: '/goods', query: {categoryID:categoryID} }">
           Browse More
           <i class="el-icon-d-arrow-right"></i>
         </router-link>
-      </li>
+      </li> -->
     </ul>
   </div>
 </template>
@@ -63,6 +63,7 @@ export default {
                 const temp = this.list[i];
                 if (temp.product_id == product_id) {
                   this.list.splice(i, 1);
+                  
                 }
               }
               this.notifySucceed(res.data.msg);
@@ -70,6 +71,7 @@ export default {
             default:
               this.notifyError(res.data.msg);
           }
+
         })
         .catch(err => {
           return Promise.reject(err);

@@ -20,16 +20,30 @@
       <div class="main">
         <div class="phone">
           <div class="box-hd">
-            <div class="title">Books</div>
+            <h1 class="title">Books</h1>
           </div>
           <div class="box-bd">
             <div class="promo-list">
-              <router-link to>
-                <img src="../../public/imgs/anh1.jpg" />
-              </router-link>
+              <h3>Collaborative filtering by product rating</h3>
             </div>
             <div class="list">
-              <MyList :list="phoneList" :isMore="true"></MyList>
+              <MyList :list="listProductCf" :isMore="true"></MyList>
+            </div>
+          </div>
+          <div class="box-bd">
+            <div class="promo-list">
+              <h3>Collaborative filtering by author rating</h3>
+            </div>
+            <div class="list">
+              <MyList :list="listProductAuthor" :isMore="true"></MyList>
+            </div>
+          </div>
+          <div class="box-bd">
+            <div class="promo-list">
+              <h3>Content based by product rating</h3>
+            </div>
+            <div class="list">
+              <MyList :list="listProductCf" :isMore="true"></MyList>
             </div>
           </div>
         </div>
@@ -44,7 +58,9 @@ export default {
   data() {
     return {
       carousel: "", 
-      phoneList: "",
+      listProductCb :"",
+      listProductCf :"",
+      listProductAuthor :"",
       miTvList: "", 
       applianceList: "",
       applianceHotList: "", 
@@ -91,13 +107,10 @@ export default {
   },
   created() {
     if (!this.$store.getters.getUser) {
-        this.getPromo("", "phoneList","/api/product/getPromoProduct");
+        this.getPromo("", "list","/api/product/getPromoProduct");
         
       }else{
-
-          this.getRecommend("", "phoneList")
-
-        
+          this.getRecommend("", "listProductCb","listProductCf","listProductAuthor")
       }
   },
   computed: {
@@ -110,27 +123,38 @@ export default {
     getChildMsg2(val) {
       this.accessoryActive = val;
     },
-    getPromo(categoryName, val, api) {
+    getPromo(categoryName, val,val2,val3, api) {
       api = api != undefined ? api : "/api/product/getPromoProduct";
       this.$axios
         .post(api, {
 
         })
         .then(res => {
-          this[val] = res.data.Product;
+          this[val] = res.data.ProductRatingCb;
+          this[val2]=res.data.ProductRatingCf;
+          this[val3]=res.data.ProductRatingAuthor;
+
         })
         .catch(err => {
           return Promise.reject(err);
         });
     },
-    getRecommend(categoryName, val) {
+    getRecommend(categoryName, val,val2,val3) {
       let api = "/api/user/recommend";
       this.$axios
         .post(api, {
           user_id :this.$store.getters.getUser.user_id
         })
         .then(res => {
-          this[val] = res.data.Product;
+          this[val] = res.data.ProductRatingCb;
+          this[val2]=res.data.ProductRatingCf;
+          this[val3]=res.data.ProductRatingAuthor;
+
+          this[val] = this[val].filter((value, index, self) =>
+            index === self.findIndex((t) => (
+              t.product_id === value.product_id
+            ))
+          )
         })
         .catch(err => {
           return Promise.reject(err);
