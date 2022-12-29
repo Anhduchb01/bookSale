@@ -24,7 +24,7 @@
           </div>
           <div class="box-bd">
             <div class="promo-list">
-              <h3>Collaborative filtering by product rating</h3>
+              <h3 v-if="showText">Collaborative filtering by product rating</h3>
             </div>
             <div class="list">
               <MyList :list="listProductCf" :isMore="true"></MyList>
@@ -32,7 +32,7 @@
           </div>
           <div class="box-bd">
             <div class="promo-list">
-              <h3>Collaborative filtering by author rating</h3>
+              <h3 v-if="showText"> Collaborative filtering by author rating</h3>
             </div>
             <div class="list">
               <MyList :list="listProductAuthor" :isMore="true"></MyList>
@@ -40,7 +40,7 @@
           </div>
           <div class="box-bd">
             <div class="promo-list">
-              <h3>Content based by product rating</h3>
+              <h3 v-if="showText">Content based by product rating</h3>
             </div>
             <div class="list">
               <MyList :list="listProductCf" :isMore="true"></MyList>
@@ -69,7 +69,8 @@ export default {
       protectingShellList: "", 
       chargerList: "", 
       applianceActive: 1, 
-      accessoryActive: 1 
+      accessoryActive: 1 ,
+      showText : false
     };
   },
   watch: {
@@ -124,6 +125,7 @@ export default {
       this.accessoryActive = val;
     },
     getPromo(categoryName, val,val2,val3, api) {
+      this.showText =false
       api = api != undefined ? api : "/api/product/getPromoProduct";
       this.$axios
         .post(api, {
@@ -140,12 +142,14 @@ export default {
         });
     },
     getRecommend(categoryName, val,val2,val3) {
+
       let api = "/api/user/recommend";
       this.$axios
         .post(api, {
           user_id :this.$store.getters.getUser.user_id
         })
         .then(res => {
+          this.showText =true
           this[val] = res.data.ProductRatingCb;
           this[val2]=res.data.ProductRatingCf;
           this[val3]=res.data.ProductRatingAuthor;
