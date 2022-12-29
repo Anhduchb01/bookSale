@@ -126,6 +126,36 @@ class CF(object):
         
         return recommended_items 
     
+def process_data_author(rating):
+    rating = pd.DataFrame(rating["Rating_author"])[['user_id','author_id','rating']]
+    rate_train = rating.to_numpy()
+    return rate_train
+
+def get_author_cf_for_user(rating, id_user):
+
+    product = pd.DataFrame(rating["Product"])[['product_id', 'author_id']]
+    product_id = product['product_id'].tolist()
+    author_id = product['author_id'].tolist()
+
+
+    author_id_to_product_id = dict()
+    for id in author_id:
+        author_id_to_product_id[id] = []
+    for index, id in enumerate(author_id):
+        author_id_to_product_id[id] += [product_id[index]]
+
+
+    rate_train = process_data_author(rating)
+    cf = CF(rate_train, k = 4, uuCF = 1)
+    cf.fit()
+    list_author_id = cf.recommend(id_user,4)
+
+    recommend_product_id = []
+    for author_id in list_author_id:
+        recommend_product_id+=author_id_to_product_id[author_id]
+        
+    return recommend_product_id
+
 def process_data(rating):
     rating = pd.DataFrame(rating["Rating"])[['user_id','product_id','rating']]
     rate_train = rating.to_numpy()
