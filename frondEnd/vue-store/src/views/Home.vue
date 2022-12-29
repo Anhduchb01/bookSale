@@ -107,7 +107,7 @@ export default {
   },
   created() {
     if (!this.$store.getters.getUser) {
-        this.getPromo("", "list","/api/product/getPromoProduct");
+        this.getPromo("", "listProductCb","listProductCf","listProductAuthor","/api/product/getPromoProduct");
         
       }else{
           this.getRecommend("", "listProductCb","listProductCf","listProductAuthor")

@@ -109,9 +109,12 @@ def recommend(request):
 # Home
 @csrf_exempt
 def getPromoProduct(request):
-        obj = Product.objects.all().order_by('product_id')[:19] 
-        total = len(obj)
-        data = { "code":"001","total":total,"Product" :list(obj.values("product_id", "category_id", "prodcut_num", "product_intro", "product_name", "product_picture","product_price","product_title"))
+
+        obj1 = Product.objects.all().order_by('product_id')[:4] 
+        obj2 = Product.objects.all().order_by('product_id')[4:8] 
+        obj3 =  Product.objects.all().order_by('product_id')[8:12] 
+
+        data = { "code":"001","ProductRatingCb" :list(obj1.values("product_id", "category_id", "prodcut_num", "product_intro", "product_name", "product_picture","product_price","product_title")),"ProductRatingCf" :list(obj2.values("product_id", "category_id", "prodcut_num", "product_intro", "product_name", "product_picture","product_price","product_title")),"ProductRatingAuthor" :list(obj3.values("product_id", "category_id", "prodcut_num", "product_intro", "product_name", "product_picture","product_price","product_title"))
                 }
         
         return JsonResponse(data)
