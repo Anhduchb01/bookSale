@@ -253,7 +253,7 @@ a:hover {
   color: #fff;
 }
 .topbar .nav .shopCart {
-  width: 120px;
+  width: 180px;
   background: #424242;
 }
 .topbar .nav .shopCart:hover {
