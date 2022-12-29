@@ -155,7 +155,8 @@ def getShoppingCart(request):
                         "price": product.product_price,
                         "num": p['num'],
                         "maxNum": product.prodcut_num,
-                        "check": False       
+                        "check": False  ,
+                        'author_id' : product.author_id
                 }
                 arrProduct.append(shoppingCartDataTemp)
         
@@ -173,6 +174,8 @@ def addOrder(request):
         products = json_data['products']
         nowTime = datetime.now(tz=timezone.utc)
         for product in products:
+                print(product)
+                print(type(product))
                 # save order
                 try:
                         lastOrder = Order.objects.last()
@@ -181,14 +184,14 @@ def addOrder(request):
                         Order_idobj = 0
                 # Plus rating for rating
                 try : 
-                        objRating = Rating.objects.get(user_id=user_id,author_id=product['author_id'])
+                        objRating = Rating.objects.get(user_id=user_id,product_id=product['productID'])
                         objRating.rating =  objRating.rating + 5
                         objRating.save()
 
                 except:
                         lastRating = Rating.objects.last()
                         rating_idobj = int(lastRating.rating_id) + 1
-                        objRating = Rating(rating_id=rating_idobj,user_id=user_id,author_id=product['author_id'],rating=5)
+                        objRating = Rating(rating_id=rating_idobj,user_id=user_id,product_id=product['productID'],rating=5)
                         objRating.save()
                 # Plus rating for rating_author
                 try : 
@@ -199,7 +202,7 @@ def addOrder(request):
                 except:
                         lastRating = Rating_Author.objects.last()
                         rating_idobj = int(lastRating.rating_id) + 1
-                        objRating = Rating(rating_id=rating_idobj,user_id=user_id,product_id=product['productID'],rating=5)
+                        objRating = Rating_Author(rating_id=rating_idobj,user_id=user_id,author_id=product['author_id'],rating=5)
                         objRating.save()
                 orderObj = Order(order_id=Order_idobj,user_id=user_id,product_id=product['productID'],product_num=product['num'],product_price=product['price'],order_time=nowTime)
                 orderObj.save()
@@ -266,7 +269,7 @@ def getDetails(request):
                 except:
                         lastRating = Rating_Author.objects.last()
                         rating_idobj = int(lastRating.rating_id) + 1
-                        objRating = Rating_Author(rating_id=rating_idobj,user_id=user_id,pauthor_id=obj.author_id,rating=1)
+                        objRating = Rating_Author(rating_id=rating_idobj,user_id=user_id,author_id=obj.author_id,rating=1)
                         objRating.save()
                 
 
