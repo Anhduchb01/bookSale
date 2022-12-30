@@ -63,6 +63,7 @@ def process_data(rating, category, product):
     ## Process rating 
     rating = pd.DataFrame(rating["Rating"])[["user_id",'product_id',"rating"]]
     rate_train = rating.to_numpy()
+    n_users = len(set(rating['user_id'].tolist()))
 
     categories = pd.DataFrame(category["Category"])
     trans = dict()
@@ -84,11 +85,13 @@ def process_data(rating, category, product):
             except:
                 pass
             
-    return rate_train, X_train_counts, n_items
+    return rate_train, X_train_counts, n_items, n_users
 
 def get_item_cb_for_user(rating, category, product, id_user):
-    rate_train, X_train, n_items = process_data(rating, category, product)
-    cb = Contentbased(rate_train, X_train, n_users=10, n_items=n_items)
+    rate_train, X_train, n_items, n_users = process_data(rating, category, product)
+    cb = Contentbased(rate_train, X_train, n_users=n_users, n_items=n_items)
+    print(n_users)
+    print(get_items_rated_by_user(rate_train, 10))
     cb.fit()
     return list(cb.recommend(id_user, 4))
 

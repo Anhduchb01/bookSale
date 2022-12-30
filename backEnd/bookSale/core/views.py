@@ -45,26 +45,30 @@ def recommend(request):
 
                 data = { "code":"001","Rating" :list(rating.values("rating_id", "product_id","user_id","rating")),"Category":list(category.values("category_id", "category_name")),"Product":list(product.values("product_id", "category_id", "prodcut_num", "product_intro", "product_name", "product_picture","product_price","product_title","author_id"))
                         }
-                try:
-                        listProductcf = get_item_cf_for_user(data,user_id)
-                except:     
-                        listProductcf = []    
-                        for i in range(4):
-                                x = random.randint(50)
-                                listProductcf.append(x)
+                print('before')
+                listProductcf = get_item_cf_for_user(data,user_id)
+                print('after')
+                # try:
+                #         listProductcf = get_item_cf_for_user(data,user_id)
+                # except:     
+                #         listProductcf = []    
+                #         for i in range(4):
+                #                 x = random.randint(50)
+                #                 listProductcf.append(x)
 
                 
                 for i in listProductcf:
                         product = model_to_dict(Product.objects.get(product_id=i))
                         arrProductRatingCf.append(product)
-                try:
-                        listProductcb = get_item_cb_for_user(data,data,data,user_id)
-                except:
+                listProductcb = get_item_cb_for_user(data,data,data,user_id)
+                # try:
+                #         listProductcb = get_item_cb_for_user(data,data,data,user_id)
+                # except:
                             
-                        listProductcb = []    
-                        for i in range(4):
-                                x = random.randint(50)
-                                listProductcb.append(x)
+                #         listProductcb = []    
+                #         for i in range(4):
+                #                 x = random.randint(50)
+                #                 listProductcb.append(x)
 
                 for i in listProductcb:
                         product = model_to_dict(Product.objects.get(product_id=i))
@@ -98,15 +102,16 @@ def recommend(request):
 
                 data = { "code":"001","Rating" :list(rating.values("rating_id", "product_id","user_id","rating")),"Rating_author":list(rating_author.values("rating_id", "author_id","user_id","rating")),"category":list(category.values("category_id", "category_name")),"Product":list(product.values("product_id", "category_id", "prodcut_num", "product_intro", "product_name", "product_picture","product_price","product_title","author_id"))
                         }
-                try:
-                        listProductauthor = get_author_cf_for_user(data,user_id)[:4]
-                except:
+                listProductauthor = get_author_cf_for_user(data,user_id)[:4]
+                # try:
+                #         listProductauthor = get_author_cf_for_user(data,user_id)[:4]
+                # except:
                         
                             
-                        listProductauthor = []    
-                        for i in range(4):
-                                x = random.randint(50)
-                                listProductauthor.append(x)
+                #         listProductauthor = []    
+                #         for i in range(4):
+                #                 x = random.randint(50)
+                #                 listProductauthor.append(x)
 
                 
                 for i in listProductauthor:
@@ -243,12 +248,14 @@ def getAllProduct(request):
         json_data = json.loads(request.body)
         currentPage = int(json_data['currentPage'])
         pageSize = int(json_data['pageSize'])
-        listProduct = Product.objects.all().order_by('product_id')
+        listProduct = Product.objects.filter()
+        total = len(listProduct)
         p = Paginator(listProduct, pageSize)   
         obj = p.get_page(currentPage).object_list
-        
-        total = len(obj)
-        data = { "code":"001","total":total,"Product" :list(obj.values("product_id", "category_id", "prodcut_num", "product_intro", "product_name", "product_picture","product_price","product_title","author_id"))
+        arrproduct = []
+        for product in obj:
+                arrproduct.append(model_to_dict(product))
+        data = { "code":"001","total":total,"Product" :arrproduct
                 }
 
         return JsonResponse(data)
@@ -263,6 +270,8 @@ def getProductBySearch(request):
         listProduct = Product.objects.filter(Q(product_intro__contains=str(key)) | Q(product_name__contains=str(key)))
         p = Paginator(listProduct, pageSize)   
         listProductPage = p.get_page(currentPage).object_list
+        print(listProductPage)
+        print(type(listProductPage))
         data = { "Product" :list(listProductPage.values()),"total":len(list(listProductPage.values()))
                 }
         return JsonResponse(data)

@@ -48,7 +48,7 @@ export default {
       product: "", 
       productList: "",
       total: 0, 
-      pageSize: 15, 
+      pageSize: 16, 
       currentPage: 1, 
       activeName: "-1", 
       search: "" 

@@ -70,16 +70,9 @@
   "userName": "user9"
 },{
   "_id": {
-    "$oid": "639c2056850c6a2661c694ed"
+    "$oid": "63ae63d8638e058fbc6ccda9"
   },
-  "password": "anhducythb01",
+  "password": "ANHDUC01",
   "user_id": 10,
-  "userName": "anhduc"
-},{
-  "_id": {
-    "$oid": "639c4ecca7b0e1caee54eee2"
-  },
-  "password": "thanhdat123",
-  "user_id": 11,
-  "userName": "thanhdat"
+  "userName": "anhduc01"
 }]

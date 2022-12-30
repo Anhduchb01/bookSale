@@ -134,6 +134,7 @@ export default {
               if (res.data.code === "001") {
                 this.isRegister = false;
                 this.notifySucceed(res.data.msg);
+                location.reload()
               } else {
                 this.notifyError(res.data.msg);
               }

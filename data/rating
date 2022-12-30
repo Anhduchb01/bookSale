@@ -43,7 +43,7 @@
     "$oid": "639b0e933b0c80838a4c3952"
   },
   "product_id": 37,
-  "rating": 1,
+  "rating": 4,
   "rating_id": 5,
   "user_id": 0
 },{
@@ -83,7 +83,7 @@
     "$oid": "639b0e933b0c80838a4c3957"
   },
   "product_id": 25,
-  "rating": 3,
+  "rating": 5,
   "rating_id": 10,
   "user_id": 0
 },{
@@ -243,7 +243,7 @@
     "$oid": "639b0e933b0c80838a4c396b"
   },
   "product_id": 3,
-  "rating": 3,
+  "rating": 5,
   "rating_id": 30,
   "user_id": 1
 },{
@@ -259,7 +259,7 @@
     "$oid": "639b0e933b0c80838a4c396d"
   },
   "product_id": 2,
-  "rating": 3,
+  "rating": 5,
   "rating_id": 32,
   "user_id": 1
 },{
@@ -1694,4 +1694,60 @@
   "rating": 1,
   "rating_id": 211,
   "user_id": 9
+},{
+  "_id": {
+    "$oid": "639d95db9cd84aec2d0e0ff3"
+  },
+  "rating_id": 217,
+  "product_id": 8,
+  "user_id": 0,
+  "rating": 3
+},{
+  "_id": {
+    "$oid": "639d9bda56052cafd024470c"
+  },
+  "rating_id": 218,
+  "product_id": 5,
+  "user_id": 0,
+  "rating": 9
+},{
+  "_id": {
+    "$oid": "639d9f2b86d26dad63b90d69"
+  },
+  "rating_id": 219,
+  "product_id": 2,
+  "user_id": 0,
+  "rating": 1
+},{
+  "_id": {
+    "$oid": "63ade4e3f159c5c591f62eb2"
+  },
+  "rating_id": 220,
+  "product_id": 4,
+  "user_id": 1,
+  "rating": 8
+},{
+  "_id": {
+    "$oid": "63ae6403638e058fbc6ccdaa"
+  },
+  "rating_id": 230,
+  "product_id": 2,
+  "user_id": 10,
+  "rating": 24
+},{
+  "_id": {
+    "$oid": "63ae6414638e058fbc6ccdad"
+  },
+  "rating_id": 231,
+  "product_id": 3,
+  "user_id": 10,
+  "rating": 10
+},{
+  "_id": {
+    "$oid": "63ae641d638e058fbc6ccdb2"
+  },
+  "rating_id": 232,
+  "product_id": 6,
+  "user_id": 10,
+  "rating": 15
 }]
