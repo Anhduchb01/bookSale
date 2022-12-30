@@ -19,7 +19,7 @@ from .content_based import get_item_cb_for_user
 import json
 import numpy as np
 from django.db.models import Q
-
+from numpy import random
 from datetime import datetime, timezone
 
 # recommend
@@ -43,15 +43,28 @@ def recommend(request):
                 category = Category.objects.all()
                 product = Product.objects.all()
 
-                data = { "code":"001","Rating" :list(rating.values("rating_id", "product_id","user_id","rating")),"Category":list(category.values("category_id", "category_name")),"Product":list(product.values("product_id", "category_id", "prodcut_num", "product_intro", "product_name", "product_picture","product_price","product_title"))
+                data = { "code":"001","Rating" :list(rating.values("rating_id", "product_id","user_id","rating")),"Category":list(category.values("category_id", "category_name")),"Product":list(product.values("product_id", "category_id", "prodcut_num", "product_intro", "product_name", "product_picture","product_price","product_title","author_id"))
                         }
-                listProductcf = get_item_cf_for_user(data,user_id)
+                try:
+                        listProductcf = get_item_cf_for_user(data,user_id)
+                except:     
+                        listProductcf = []    
+                        for i in range(4):
+                                x = random.randint(50)
+                                listProductcf.append(x)
 
                 
                 for i in listProductcf:
                         product = model_to_dict(Product.objects.get(product_id=i))
                         arrProductRatingCf.append(product)
-                listProductcb = get_item_cb_for_user(data,data,data,user_id)
+                try:
+                        listProductcb = get_item_cb_for_user(data,data,data,user_id)
+                except:
+                            
+                        listProductcb = []    
+                        for i in range(4):
+                                x = random.randint(50)
+                                listProductcb.append(x)
 
                 for i in listProductcb:
                         product = model_to_dict(Product.objects.get(product_id=i))
@@ -59,11 +72,11 @@ def recommend(request):
        
         else:
                 obj = Product.objects.all().order_by('product_id')[:4] 
-                ListProduct = list(obj.values("product_id", "category_id", "prodcut_num", "product_intro", "product_name", "product_picture","product_price","product_title"))
+                ListProduct = list(obj.values("product_id", "category_id", "prodcut_num", "product_intro", "product_name", "product_picture","product_price","product_title","author_id"))
                 for product in ListProduct:
                         arrProductRatingCf.append(product)
                 obj2 = Product.objects.all().order_by('product_id')[:4] 
-                ListProduct2 = list(obj2.values("product_id", "category_id", "prodcut_num", "product_intro", "product_name", "product_picture","product_price","product_title"))
+                ListProduct2 = list(obj2.values("product_id", "category_id", "prodcut_num", "product_intro", "product_name", "product_picture","product_price","product_title","author_id"))
                 for product2 in ListProduct2:
                         arrProductRatingCb.append(product2)
 
@@ -85,10 +98,18 @@ def recommend(request):
 
                 data = { "code":"001","Rating" :list(rating.values("rating_id", "product_id","user_id","rating")),"Rating_author":list(rating_author.values("rating_id", "author_id","user_id","rating")),"category":list(category.values("category_id", "category_name")),"Product":list(product.values("product_id", "category_id", "prodcut_num", "product_intro", "product_name", "product_picture","product_price","product_title","author_id"))
                         }
-                listProductcf = get_author_cf_for_user(data,user_id)[:4]
+                try:
+                        listProductauthor = get_author_cf_for_user(data,user_id)[:4]
+                except:
+                        
+                            
+                        listProductauthor = []    
+                        for i in range(4):
+                                x = random.randint(50)
+                                listProductauthor.append(x)
 
                 
-                for i in listProductcf:
+                for i in listProductauthor:
                         product = model_to_dict(Product.objects.get(product_id=i))
                         arrProductRatingAuthor.append(product)
                 # listProductcb = get_author_cf_for_user(data,data,data,user_id)
@@ -100,7 +121,7 @@ def recommend(request):
         else:
                 obj = Product.objects.all().order_by('product_id')[:8] 
                 total = len(obj)
-                ListProduct = list(obj.values("product_id", "category_id", "prodcut_num", "product_intro", "product_name", "product_picture","product_price","product_title"))
+                ListProduct = list(obj.values("product_id", "category_id", "prodcut_num", "product_intro", "product_name", "product_picture","product_price","product_title","author_id"))
                 for product in ListProduct:
                         arrProductRatingAuthor.append(product)
 
@@ -114,7 +135,7 @@ def getPromoProduct(request):
         obj2 = Product.objects.all().order_by('product_id')[4:8] 
         obj3 =  Product.objects.all().order_by('product_id')[8:12] 
 
-        data = { "code":"001","ProductRatingCb" :list(obj1.values("product_id", "category_id", "prodcut_num", "product_intro", "product_name", "product_picture","product_price","product_title")),"ProductRatingCf" :list(obj2.values("product_id", "category_id", "prodcut_num", "product_intro", "product_name", "product_picture","product_price","product_title")),"ProductRatingAuthor" :list(obj3.values("product_id", "category_id", "prodcut_num", "product_intro", "product_name", "product_picture","product_price","product_title"))
+        data = { "code":"001","ProductRatingCb" :list(obj1.values("product_id", "category_id", "prodcut_num", "product_intro", "product_name", "product_picture","product_price","product_title","author_id")),"ProductRatingCf" :list(obj2.values("product_id", "category_id", "prodcut_num", "product_intro", "product_name", "product_picture","product_price","product_title","author_id")),"ProductRatingAuthor" :list(obj3.values("product_id", "category_id", "prodcut_num", "product_intro", "product_name", "product_picture","product_price","product_title","author_id"))
                 }
         
         return JsonResponse(data)
@@ -195,15 +216,15 @@ def addOrder(request):
                         objRating.save()
                 # Plus rating for rating_author
                 try : 
-                        objRating = Rating_Author.objects.get(user_id=user_id,author_id=product['author_id'])
-                        objRating.rating =  objRating.rating + 5
-                        objRating.save()
+                        objRating1 = Rating_Author.objects.get(user_id=user_id,author_id=product['author_id'])
+                        objRating1.rating =  objRating1.rating + 5
+                        objRating1.save()
 
                 except:
-                        lastRating = Rating_Author.objects.last()
-                        rating_idobj = int(lastRating.rating_id) + 1
-                        objRating = Rating_Author(rating_id=rating_idobj,user_id=user_id,author_id=product['author_id'],rating=5)
-                        objRating.save()
+                        lastRating1 = Rating_Author.objects.last()
+                        rating_idobj1 = int(lastRating1.rating_id) + 1
+                        objRating1 = Rating_Author(rating_id=rating_idobj1,user_id=user_id,author_id=product['author_id'],rating=5)
+                        objRating1.save()
                 orderObj = Order(order_id=Order_idobj,user_id=user_id,product_id=product['productID'],product_num=product['num'],product_price=product['price'],order_time=nowTime)
                 orderObj.save()
                 
@@ -219,9 +240,15 @@ def addOrder(request):
 # Goods (All product)
 @csrf_exempt
 def getAllProduct(request):
-        obj = Product.objects.all().order_by('product_id')[:20] 
+        json_data = json.loads(request.body)
+        currentPage = int(json_data['currentPage'])
+        pageSize = int(json_data['pageSize'])
+        listProduct = Product.objects.all().order_by('product_id')
+        p = Paginator(listProduct, pageSize)   
+        obj = p.get_page(currentPage).object_list
+        
         total = len(obj)
-        data = { "code":"001","total":total,"Product" :list(obj.values("product_id", "category_id", "prodcut_num", "product_intro", "product_name", "product_picture","product_price","product_title"))
+        data = { "code":"001","total":total,"Product" :list(obj.values("product_id", "category_id", "prodcut_num", "product_intro", "product_name", "product_picture","product_price","product_title","author_id"))
                 }
 
         return JsonResponse(data)
@@ -299,7 +326,8 @@ def addShoppingCart(request):
                 "price": product.product_price,
                 "num": b.num,
                 "maxNum": product.prodcut_num,
-                "check": False
+                "check": False,
+                "author_id":product.author_id
         }
         #plus rating for rating
         try : 
