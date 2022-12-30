@@ -45,9 +45,9 @@ def recommend(request):
 
                 data = { "code":"001","Rating" :list(rating.values("rating_id", "product_id","user_id","rating")),"Category":list(category.values("category_id", "category_name")),"Product":list(product.values("product_id", "category_id", "prodcut_num", "product_intro", "product_name", "product_picture","product_price","product_title","author_id"))
                         }
-                print('before')
+  
                 listProductcf = get_item_cf_for_user(data,user_id)
-                print('after')
+                print(listProductcf)
                 # try:
                 #         listProductcf = get_item_cf_for_user(data,user_id)
                 # except:     
@@ -56,11 +56,12 @@ def recommend(request):
                 #                 x = random.randint(50)
                 #                 listProductcf.append(x)
 
-                
                 for i in listProductcf:
                         product = model_to_dict(Product.objects.get(product_id=i))
                         arrProductRatingCf.append(product)
+
                 listProductcb = get_item_cb_for_user(data,data,data,user_id)
+                print(listProductcb)
                 # try:
                 #         listProductcb = get_item_cb_for_user(data,data,data,user_id)
                 # except:
@@ -103,6 +104,7 @@ def recommend(request):
                 data = { "code":"001","Rating" :list(rating.values("rating_id", "product_id","user_id","rating")),"Rating_author":list(rating_author.values("rating_id", "author_id","user_id","rating")),"category":list(category.values("category_id", "category_name")),"Product":list(product.values("product_id", "category_id", "prodcut_num", "product_intro", "product_name", "product_picture","product_price","product_title","author_id"))
                         }
                 listProductauthor = get_author_cf_for_user(data,user_id)[:4]
+                print(listProductauthor)
                 # try:
                 #         listProductauthor = get_author_cf_for_user(data,user_id)[:4]
                 # except:

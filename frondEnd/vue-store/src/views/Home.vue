@@ -43,7 +43,7 @@
               <h3 v-if="showText">Content based by product rating</h3>
             </div>
             <div class="list">
-              <MyList :list="listProductCf" :isMore="true"></MyList>
+              <MyList :list="listProductCb" :isMore="true"></MyList>
             </div>
           </div>
         </div>
